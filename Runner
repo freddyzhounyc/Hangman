@@ -1,0 +1,93 @@
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+#include <cctype>
+using namespace std;
+
+int main(){
+	srand(time(0));
+  
+	int miss = 10;
+	int counter;
+	char guess;
+	string words[] = {"Jazz Rocks!", "Pyruvate Oxidaion", "I love Math!", "Two Birds, One Stone...", "It's mad brick!'"};
+	string hint[] = {"Music Category", "Biology Process", "School Phrase", "Idiomatic", "Very Cold (NY slang)"};
+	int randnum = rand() % 5;
+	char alphabetlow[] = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
+	char alphabethigh[] = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
+	int position;
+	string popUp = words[randnum];
+	string checklow = words[randnum];
+	string checkup = words [randnum];
+	string display = words[randnum];
+
+	cout << "You have 10 lives." <<endl <<endl;
+	for (int i=0; i<display.length(); i++){
+		if (isalpha(display[i])){
+    		display[i] = '_';
+    	}
+		else{
+			display[i] = display[i];
+    	}
+	}
+	for (int print=0; print<display.length(); print++){
+		cout << display[print] << " ";
+	}
+	
+	while ((display != words[randnum]) && (miss != 0)){
+		cout <<endl << "Available Letters(Low): ";
+		for (int z=0; z<sizeof(alphabetlow); z++){
+			cout << alphabetlow[z] << " ";
+		}
+		cout <<endl << "Available Letters(High): ";
+		for (int y=0; y<sizeof(alphabethigh); y++){
+			cout << alphabethigh[y] << " ";
+		}
+		int counter = 0;
+		cout <<endl << "Hint: " << hint[randnum] <<endl;
+		cout << "Enter a letter: ";
+		cin >> guess;
+		
+		for (int b=0; b<display.length(); b++){
+			checklow[b] = tolower(checklow[b]);
+		}
+		for (int a=0; a<display.length(); a++){
+			if (checklow[a] == guess){
+				display[a] = popUp[a];
+			} else if (checklow[a] != guess){
+				counter++;
+				position = tolower(guess) - 'a';
+				alphabetlow[position] = '/';
+				position = toupper(guess) - 'A';
+				alphabethigh[position] = '/';
+			}
+		}
+		
+		for (int c=0; c<display.length(); c++){
+			checkup[c] = toupper(checkup[c]);
+		}
+		for (int d=0; d<display.length(); d++){
+			if (checkup[d] == guess){
+				display[d] = popUp[d];
+			} else if (checkup[d] != guess){
+				counter++;
+				position = tolower(guess) - 'a';
+				alphabetlow[position] = '/';
+				position = toupper(guess) - 'A';
+				alphabethigh[position] = '/';
+			}
+		}
+		
+		if (counter >= 2*display.length()){
+			cout << "Incorrect" <<endl;
+			miss--;
+			cout << "Lives: " << miss << "/10" << "\n" << "\n";
+		} else{
+			cout << "Correct" <<endl << "Lives: " << miss << "/10" << "\n" << "\n";
+		}
+		
+		for (int print=0; print<display.length(); print++){
+			cout << display[print] << " ";
+		}
+	}
+}
